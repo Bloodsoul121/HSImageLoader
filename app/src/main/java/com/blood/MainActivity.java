@@ -7,15 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.blood.imageloader.HSImageLoader;
 import com.blood.imageloader.HSImageOption;
-import com.blood.util.DPUtil;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
+import com.blood.imageloader.IImageStrategy;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,19 +60,35 @@ public class MainActivity extends AppCompatActivity {
 //        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
 
         Log.i("bloodsoul", "loadImage");
-        Glide.with(this).load(mImageUrl).into(new CustomTarget<Drawable>() {
-            @Override
-            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                Log.i("bloodsoul", "loadImage onResourceReady");
-                mIvDeal.setImageDrawable(resource);
-            }
+//        Glide.with(this).load(mImageUrl).into(new CustomTarget<Drawable>() {
+//            @Override
+//            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+//                Log.i("bloodsoul", "loadImage onResourceReady");
+//                mIvDeal.setImageDrawable(resource);
+//            }
+//
+//            @Override
+//            public void onLoadCleared(@Nullable Drawable placeholder) {
+//
+//            }
+//        });
 
-            @Override
-            public void onLoadCleared(@Nullable Drawable placeholder) {
+//        HSImageLoader.getInstance().load(this, mImageUrl, new IImageStrategy.Callback() {
+//            @Override
+//            public void onLoadCompleted(@NonNull Drawable drawable) {
+//                Log.i("bloodsoul", "loadImage onResourceReady");
+//                mIvDeal.setImageDrawable(drawable);
+//            }
+//
+//            @Override
+//            public void onLoadFailed() {
+//                Log.i("bloodsoul", "loadImage onLoadFailed");
+//            }
+//        });
 
-            }
-        });
         Log.i("bloodsoul", "loadImage end");
+
+        HSImageLoader.getInstance().display(this, mIvDeal, "");
     }
 
     public void clearMemory(View view) {

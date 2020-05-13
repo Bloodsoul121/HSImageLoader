@@ -5,6 +5,9 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.blood.MainApplication;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
@@ -13,11 +16,48 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
-public class GlideLoaderStrategy implements IImageLoaderStrategy {
+public class GlideStrategy implements IImageStrategy {
 
     @Override
     public void display(Context context, ImageView view, HSImageOption option) {
+        RequestBuilder<Drawable> requestBuilder = setup(context, option);
+        if (requestBuilder == null) {
+            view.setImageDrawable(null);
+            return;
+        }
+        requestBuilder.into(view);
+    }
+
+    @Override
+    public void load(Context context, HSImageOption option, Callback callback) {
+        RequestBuilder<Drawable> requestBuilder = setup(context, option);
+        if (requestBuilder == null) {
+            if (callback != null) {
+                callback.onLoadFailed();
+            }
+            return;
+        }
+        requestBuilder.into(new CustomTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                if (callback != null) {
+                    callback.onLoadCompleted(resource);
+                }
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+                if (callback != null) {
+                    callback.onLoadFailed();
+                }
+            }
+        });
+    }
+
+    private RequestBuilder<Drawable> setup(Context context, HSImageOption option) {
         RequestManager requestManager = Glide.with(context);
         RequestBuilder<Drawable> requestBuilder;
         if (option.uri != null) {
@@ -29,7 +69,7 @@ public class GlideLoaderStrategy implements IImageLoaderStrategy {
         } else if (!TextUtils.isEmpty(option.url)) {
             requestBuilder = requestManager.load(option.url);
         } else {
-            throw new IllegalStateException("HSImageOption load file is required");
+            return null;
         }
         if (option.placeholderResId > 0) {
             requestBuilder = requestBuilder.placeholder(option.placeholderResId);
@@ -54,7 +94,7 @@ public class GlideLoaderStrategy implements IImageLoaderStrategy {
         }
         requestBuilder = requestBuilder.skipMemoryCache(option.skipMemoryCache);
         requestBuilder = requestBuilder.diskCacheStrategy(option.skipDiskCache ? DiskCacheStrategy.NONE : DiskCacheStrategy.AUTOMATIC);
-        requestBuilder.into(view);
+        return requestBuilder;
     }
 
     @Override
