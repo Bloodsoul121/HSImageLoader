@@ -1,14 +1,17 @@
 package com.blood;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.blood.imageloader.HSImageLoader;
 import com.blood.imageloader.HSImageOption;
+import com.blood.imageloader.IImageStrategy;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private void initImage() {
 //        HSImageLoader.getInstance().display(this, mIvOri, R.drawable.image1);
         HSImageLoader.getInstance().display(this, mIvOri, mImageUrl);
-        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
+//        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
     }
 
     public void loadImage(View view) {
@@ -71,23 +74,23 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-//        HSImageLoader.getInstance().load(this, mImageUrl, new IImageStrategy.Callback() {
-//            @Override
-//            public void onLoadCompleted(@NonNull Drawable drawable) {
-//                Log.i("bloodsoul", "loadImage onResourceReady");
-//                mIvDeal.setImageDrawable(drawable);
-//            }
-//
-//            @Override
-//            public void onLoadFailed() {
-//                Log.i("bloodsoul", "loadImage onLoadFailed");
-//            }
-//        });
+        HSImageLoader.getInstance().load(this, mImageUrl, new IImageStrategy.Callback() {
+            @Override
+            public void onLoadCompleted(@NonNull Drawable drawable) {
+                Log.i("bloodsoul", "loadImage onResourceReady");
+                mIvDeal.setImageDrawable(drawable);
+            }
+
+            @Override
+            public void onLoadFailed() {
+                Log.i("bloodsoul", "loadImage onLoadFailed");
+            }
+        });
 
         Log.i("bloodsoul", "loadImage end");
 
-        String url = null;
-        HSImageLoader.getInstance().display(this, mIvDeal, url);
+//        String url = null;
+//        HSImageLoader.getInstance().display(this, mIvDeal, url);
     }
 
     public void clearMemory(View view) {
