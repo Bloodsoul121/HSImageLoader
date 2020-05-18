@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.blood.imageloader.base.HSImageLoader;
 import com.blood.imageloader.base.HSImageOption;
 import com.blood.imageloader.base.IImageStrategy;
+import com.blood.util.DPUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,16 +44,18 @@ public class MainActivity extends AppCompatActivity {
                 .fallback(R.drawable.image13)
 //                .skipDiskCache(true)
 //                .skipMemoryCache(true)
-//                .angle(DPUtil.dip2px(this, 10f))
-                .circle()
+                .round(DPUtil.dip2px(this, 50f))
+//                .circle()
 //                .resize(DPUtil.dip2px(this, 50f), DPUtil.dip2px(this, 50f))
+                .blur(25, 1)
                 .build();
     }
 
     private void initImage() {
 //        HSImageLoader.getInstance().display(this, mIvOri, R.drawable.image1);
-        HSImageLoader.getInstance().display(this, mIvOri, mImageUrl);
+//        HSImageLoader.getInstance().display(this, mIvOri, mImageUrl);
 //        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
+        HSImageLoader.getInstance().display(this, mIvOri, mImageUrl, mOption);
     }
 
     public void loadImage(View view) {

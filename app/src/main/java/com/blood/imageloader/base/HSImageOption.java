@@ -40,9 +40,15 @@ public class HSImageOption {
     // 是否跳过磁盘缓存
     boolean skipDiskCache;
     // 图片圆角角度
-    int bitmapAngle;
+    int round;
     // 是否圆形图片
     boolean circle;
+    // 是否高斯模糊
+    boolean blur;
+    // 渲染的模糊程度, 25是最大模糊度
+    int blurRadius;
+    // 图片缩放比例
+    int blurSampling;
 
     private HSImageOption(Builder builder) {
         this.bitmapConfig = builder.bitmapConfig;
@@ -56,10 +62,13 @@ public class HSImageOption {
         this.fallbackResId = builder.fallbackResId;
         this.placeholderResId = builder.placeholderResId;
         this.placeholderDrawable = builder.placeholderDrawable;
-        this.bitmapAngle = builder.bitmapAngle;
+        this.round = builder.bitmapAngle;
         this.skipMemoryCache = builder.skipMemoryCache;
         this.skipDiskCache = builder.skipDiskCache;
         this.circle = builder.circle;
+        this.blur = builder.blur;
+        this.blurRadius = builder.blurRadius;
+        this.blurSampling = builder.blurSampling;
     }
 
     public static final class Builder {
@@ -94,6 +103,12 @@ public class HSImageOption {
         boolean skipDiskCache;
         // 是否圆形图片
         boolean circle;
+        // 是否高斯模糊
+        boolean blur;
+        // 渲染的模糊程度, 25是最大模糊度
+        int blurRadius;
+        // 图片缩放比例
+        int blurSampling;
 
         public Builder() {
             bitmapConfig = Bitmap.Config.RGB_565;
@@ -150,7 +165,7 @@ public class HSImageOption {
             return this;
         }
 
-        public Builder angle(int bitmapAngle) {
+        public Builder round(int bitmapAngle) {
             this.bitmapAngle = bitmapAngle;
             return this;
         }
@@ -167,6 +182,13 @@ public class HSImageOption {
 
         public Builder circle() {
             this.circle = true;
+            return this;
+        }
+
+        public Builder blur(int radius, int sampling) {
+            this.blur = true;
+            this.blurRadius = radius;
+            this.blurSampling = sampling;
             return this;
         }
 

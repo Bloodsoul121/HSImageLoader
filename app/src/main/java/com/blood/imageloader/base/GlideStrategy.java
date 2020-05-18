@@ -1,6 +1,7 @@
 package com.blood.imageloader.base;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.widget.ImageView;
@@ -12,12 +13,19 @@ import com.blood.MainApplication;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class GlideStrategy implements IImageStrategy {
 
@@ -86,14 +94,24 @@ public class GlideStrategy implements IImageStrategy {
         if (option.targetWidth > 0 && option.targetHeight > 0) {
             requestBuilder = requestBuilder.override(option.targetWidth, option.targetHeight);
         }
-        if (option.bitmapAngle > 0) {
-            requestBuilder = requestBuilder.apply(RequestOptions.bitmapTransform(new RoundedCorners(option.bitmapAngle)));
-        }
-        if (option.circle) {
-            requestBuilder = requestBuilder.apply(RequestOptions.bitmapTransform(new CircleCrop()));
-        }
         requestBuilder = requestBuilder.skipMemoryCache(option.skipMemoryCache);
         requestBuilder = requestBuilder.diskCacheStrategy(option.skipDiskCache ? DiskCacheStrategy.NONE : DiskCacheStrategy.AUTOMATIC);
+        // 图片转换器部分
+        List<Transformation<Bitmap>> transformations = new ArrayList<>();
+        RequestOptions requestOptions = new RequestOptions();
+        if (option.round > 0) {
+            transformations.add(new RoundedCorners(option.round));
+        }
+        if (option.circle) {
+            transformations.add(new CircleCrop());
+        }
+        if (option.blur) {
+            transformations.add(new BlurTransformation(option.blurRadius, option.blurSampling));
+        }
+        if (transformations.size() > 0) {
+            requestOptions = requestOptions.transform(new MultiTransformation<>(transformations));
+        }
+        requestBuilder = requestBuilder.apply(requestOptions);
         return requestBuilder;
     }
 
