@@ -42,20 +42,21 @@ public class MainActivity extends AppCompatActivity {
                 .placeholder(R.drawable.image11)
                 .error(R.drawable.image12)
                 .fallback(R.drawable.image13)
-//                .skipDiskCache(true)
-//                .skipMemoryCache(true)
+                .skipDiskCache(true)
+                .skipMemoryCache(true)
                 .round(DPUtil.dip2px(this, 50f))
 //                .circle()
 //                .resize(DPUtil.dip2px(this, 50f), DPUtil.dip2px(this, 50f))
-                .blur(25, 1)
+//                .blur(25, 1)
+                .fadeDuration(2000)
                 .build();
     }
 
     private void initImage() {
 //        HSImageLoader.getInstance().display(this, mIvOri, R.drawable.image1);
-//        HSImageLoader.getInstance().display(this, mIvOri, mImageUrl);
+        HSImageLoader.getInstance().display(this, mIvOri, mImageUrl);
 //        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
-        HSImageLoader.getInstance().display(this, mIvOri, mImageUrl, mOption);
+//        HSImageLoader.getInstance().display(this, mIvOri, mImageUrl, mOption);
     }
 
     public void loadImage(View view) {
@@ -77,23 +78,25 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        HSImageLoader.getInstance().load(this, mImageUrl, new IImageStrategy.Callback() {
-            @Override
-            public void onLoadCompleted(@NonNull Drawable drawable) {
-                Log.i("bloodsoul", "loadImage onResourceReady");
-                mIvDeal.setImageDrawable(drawable);
-            }
-
-            @Override
-            public void onLoadFailed() {
-                Log.i("bloodsoul", "loadImage onLoadFailed");
-            }
-        });
+//        HSImageLoader.getInstance().load(this, mImageUrl, new IImageStrategy.Callback() {
+//            @Override
+//            public void onLoadCompleted(@NonNull Drawable drawable) {
+//                Log.i("bloodsoul", "loadImage onResourceReady");
+//                mIvDeal.setImageDrawable(drawable);
+//            }
+//
+//            @Override
+//            public void onLoadFailed() {
+//                Log.i("bloodsoul", "loadImage onLoadFailed");
+//            }
+//        });
 
         Log.i("bloodsoul", "loadImage end");
 
 //        String url = null;
 //        HSImageLoader.getInstance().display(this, mIvDeal, url);
+
+        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
     }
 
     public void clearMemory(View view) {

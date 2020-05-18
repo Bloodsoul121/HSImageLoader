@@ -49,6 +49,8 @@ public class HSImageOption {
     int blurRadius;
     // 图片缩放比例
     int blurSampling;
+    // 过渡渐变动画
+    int fadeDuration;
 
     private HSImageOption(Builder builder) {
         this.bitmapConfig = builder.bitmapConfig;
@@ -69,6 +71,7 @@ public class HSImageOption {
         this.blur = builder.blur;
         this.blurRadius = builder.blurRadius;
         this.blurSampling = builder.blurSampling;
+        this.fadeDuration = builder.fadeDuration;
     }
 
     public static final class Builder {
@@ -109,6 +112,8 @@ public class HSImageOption {
         int blurRadius;
         // 图片缩放比例
         int blurSampling;
+        // 过渡渐变动画
+        int fadeDuration;
 
         public Builder() {
             bitmapConfig = Bitmap.Config.RGB_565;
@@ -189,6 +194,11 @@ public class HSImageOption {
             this.blur = true;
             this.blurRadius = radius;
             this.blurSampling = sampling;
+            return this;
+        }
+
+        public Builder fadeDuration(int fadeDuration) {
+            this.fadeDuration = fadeDuration;
             return this;
         }
 

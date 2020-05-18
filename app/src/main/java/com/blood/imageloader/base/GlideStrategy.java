@@ -18,6 +18,7 @@ import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -79,6 +80,10 @@ public class GlideStrategy implements IImageStrategy {
         } else {
             return null;
         }
+        // 缓存
+        requestBuilder = requestBuilder.skipMemoryCache(option.skipMemoryCache);
+        requestBuilder = requestBuilder.diskCacheStrategy(option.skipDiskCache ? DiskCacheStrategy.NONE : DiskCacheStrategy.AUTOMATIC);
+        // 配置
         if (option.placeholderResId > 0) {
             requestBuilder = requestBuilder.placeholder(option.placeholderResId);
         }
@@ -94,8 +99,9 @@ public class GlideStrategy implements IImageStrategy {
         if (option.targetWidth > 0 && option.targetHeight > 0) {
             requestBuilder = requestBuilder.override(option.targetWidth, option.targetHeight);
         }
-        requestBuilder = requestBuilder.skipMemoryCache(option.skipMemoryCache);
-        requestBuilder = requestBuilder.diskCacheStrategy(option.skipDiskCache ? DiskCacheStrategy.NONE : DiskCacheStrategy.AUTOMATIC);
+        if (option.fadeDuration > 0) {
+            requestBuilder = requestBuilder.transition(DrawableTransitionOptions.withCrossFade(option.fadeDuration));
+        }
         // 图片转换器部分
         List<Transformation<Bitmap>> transformations = new ArrayList<>();
         RequestOptions requestOptions = new RequestOptions();
