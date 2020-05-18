@@ -2,7 +2,7 @@ package com.blood;
 
 import android.app.Application;
 
-import com.blood.imageloader.HSImageLoader;
+import com.blood.imageloader.base.HSImageLoader;
 
 public class MainApplication extends Application {
 

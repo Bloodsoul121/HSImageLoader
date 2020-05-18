@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.blood.imageloader.HSImageLoader;
-import com.blood.imageloader.HSImageOption;
-import com.blood.imageloader.IImageStrategy;
+import com.blood.imageloader.base.HSImageLoader;
+import com.blood.imageloader.base.HSImageOption;
+import com.blood.imageloader.base.IImageStrategy;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

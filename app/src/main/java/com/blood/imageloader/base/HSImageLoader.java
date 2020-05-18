@@ -1,10 +1,12 @@
-package com.blood.imageloader;
+package com.blood.imageloader.base;
 
 import android.content.Context;
 import android.net.Uri;
 import android.widget.ImageView;
 
 import androidx.annotation.DrawableRes;
+
+import com.blood.imageloader.HSImageDefaultOptions;
 
 import java.io.File;
 
@@ -28,7 +30,7 @@ public class HSImageLoader implements IImageStrategy {
      */
     public void init() {
         setImageLoader(new GlideStrategy());
-        HSImageOptions.initDefaultOptions();
+        HSImageDefaultOptions.initDefaultOptions();
     }
 
     /**
@@ -48,7 +50,7 @@ public class HSImageLoader implements IImageStrategy {
      *
      * @param context 上下文
      * @param view    要加载的view
-     * @param option  配置，可参考默认配置{@link HSImageOptions}
+     * @param option  配置，可参考默认配置{@link HSImageDefaultOptions}
      */
     @Override
     public void display(Context context, ImageView view, HSImageOption option) {
@@ -62,7 +64,7 @@ public class HSImageLoader implements IImageStrategy {
      * 主方法，只加载图片，其他方法都是重载
      *
      * @param context  上下文
-     * @param option   配置，可参考默认配置{@link HSImageOptions}
+     * @param option   配置，可参考默认配置{@link HSImageDefaultOptions}
      * @param callback 回调
      */
     @Override

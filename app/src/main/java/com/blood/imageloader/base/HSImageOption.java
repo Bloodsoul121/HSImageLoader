@@ -1,4 +1,4 @@
-package com.blood.imageloader;
+package com.blood.imageloader.base;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;

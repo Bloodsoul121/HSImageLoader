@@ -1,9 +1,11 @@
 package com.blood.imageloader;
 
+import com.blood.imageloader.base.HSImageOption;
+
 /**
  * 默认配置
  */
-public class HSImageOptions {
+public class HSImageDefaultOptions {
 
     public static HSImageOption portraitDisplayOptions; // 圆形头像
     public static HSImageOption portraitDisplayOptions2; // 方形头像
