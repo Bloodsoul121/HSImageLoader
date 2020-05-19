@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
 //        String url = null;
 //        HSImageLoader.getInstance().display(this, mIvDeal, url);
 
-        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
+//        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
+        HSImageLoader.getInstance().display(this, mIvDeal, "", mOption);
     }
 
     public void clearMemory(View view) {

@@ -78,7 +78,7 @@ public class GlideStrategy implements IImageStrategy {
         } else if (!TextUtils.isEmpty(option.url)) {
             requestBuilder = requestManager.load(option.url);
         } else {
-            return null;
+            requestBuilder = requestManager.load("");
         }
         // 缓存
         requestBuilder = requestBuilder.skipMemoryCache(option.skipMemoryCache);
