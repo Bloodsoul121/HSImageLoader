@@ -39,16 +39,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void initOption() {
         mOption = new HSImageOption.Builder()
-                .placeholder(R.drawable.image11)
+//                .placeholder(R.drawable.image11)
                 .error(R.drawable.image12)
                 .fallback(R.drawable.image13)
-                .skipDiskCache(true)
-                .skipMemoryCache(true)
-                .round(DPUtil.dip2px(this, 50f))
-//                .circle()
+//                .skipDiskCache(true)
+//                .skipMemoryCache(true)
+//                .round(DPUtil.dip2px(this, 50f))
+                .circle()
+                .circleBorder(DPUtil.dip2px(this, 5f), getResources().getColor(R.color.colorAccent))
 //                .resize(DPUtil.dip2px(this, 50f), DPUtil.dip2px(this, 50f))
 //                .blur(25, 1)
-                .fadeDuration(2000)
+//                .fadeDuration(2000)
+                .scaleType(ImageView.ScaleType.CENTER_CROP)
                 .build();
     }
 
@@ -97,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
 //        HSImageLoader.getInstance().display(this, mIvDeal, url);
 
 //        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
-        HSImageLoader.getInstance().display(this, mIvDeal, "", mOption);
+//        HSImageLoader.getInstance().display(this, mIvDeal, "", mOption);
+        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
     }
 
     public void clearMemory(View view) {

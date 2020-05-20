@@ -3,8 +3,12 @@ package com.blood.imageloader.base;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.widget.ImageView.ScaleType;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+
+import com.bumptech.glide.Priority;
 
 import java.io.File;
 
@@ -13,8 +17,6 @@ import java.io.File;
  */
 public class HSImageOption {
 
-    // 图片格式
-    Bitmap.Config bitmapConfig;
     // 加载图片uri
     Uri uri;
     // 加载图片本地文件
@@ -51,9 +53,16 @@ public class HSImageOption {
     int blurSampling;
     // 过渡渐变动画
     int fadeDuration;
+    // 缩放类型
+    ScaleType scaleType;
+    // 优先级
+    Priority priority;
+    // 圆形边框宽度（单位 px）
+    int circleBorderWidth;
+    // 圆形边框颜色
+    int circleBorderColor;
 
     private HSImageOption(Builder builder) {
-        this.bitmapConfig = builder.bitmapConfig;
         this.uri = builder.uri;
         this.file = builder.file;
         this.url = builder.url;
@@ -72,12 +81,14 @@ public class HSImageOption {
         this.blurRadius = builder.blurRadius;
         this.blurSampling = builder.blurSampling;
         this.fadeDuration = builder.fadeDuration;
+        this.scaleType = builder.scaleType;
+        this.priority = builder.priority;
+        this.circleBorderWidth = builder.circleBorderWidth;
+        this.circleBorderColor = builder.circleBorderColor;
     }
 
     public static final class Builder {
 
-        // 图片格式
-        private Bitmap.Config bitmapConfig;
         // 加载图片uri
         private Uri uri;
         // 加载图片本地文件
@@ -93,7 +104,7 @@ public class HSImageOption {
         // 加载失败
         private int errorResId;
         // 加载失败，在请求的url/model为 null 时展示
-        int fallbackResId;
+        private int fallbackResId;
         // 占位图
         private int placeholderResId;
         // 占位图
@@ -101,22 +112,30 @@ public class HSImageOption {
         // 圆角角度
         private int bitmapAngle;
         // 是否跳过内存缓存
-        boolean skipMemoryCache;
+        private boolean skipMemoryCache;
         // 是否跳过磁盘缓存
-        boolean skipDiskCache;
+        private boolean skipDiskCache;
         // 是否圆形图片
-        boolean circle;
+        private boolean circle;
         // 是否高斯模糊
-        boolean blur;
+        private boolean blur;
         // 渲染的模糊程度, 25是最大模糊度
-        int blurRadius;
+        private int blurRadius;
         // 图片缩放比例
-        int blurSampling;
+        private int blurSampling;
         // 过渡渐变动画
-        int fadeDuration;
+        private int fadeDuration;
+        // 缩放类型
+        private ScaleType scaleType;
+        // 优先级
+        private Priority priority;
+        // 圆形边框宽度（单位 px）
+        private int circleBorderWidth;
+        // 圆形边框颜色
+        private int circleBorderColor;
 
         public Builder() {
-            bitmapConfig = Bitmap.Config.RGB_565;
+            scaleType = ScaleType.FIT_CENTER;
         }
 
         public Builder uri(Uri uri) {
@@ -159,11 +178,6 @@ public class HSImageOption {
             return this;
         }
 
-        public Builder bitmapConfig(Bitmap.Config bitmapConfig) {
-            this.bitmapConfig = bitmapConfig;
-            return this;
-        }
-
         public Builder resize(int targetWidth, int targetHeight) {
             this.targetWidth = targetWidth;
             this.targetHeight = targetHeight;
@@ -199,6 +213,23 @@ public class HSImageOption {
 
         public Builder fadeDuration(int fadeDuration) {
             this.fadeDuration = fadeDuration;
+            return this;
+        }
+
+        public Builder scaleType(ScaleType scaleType) {
+            this.scaleType = scaleType;
+            return this;
+        }
+
+        public Builder priority(@NonNull Priority priority) {
+            this.priority = priority;
+            return this;
+        }
+
+        public Builder circleBorder(int circleBorderWidth, int circleBorderColor) {
+            this.circle = true;
+            this.circleBorderWidth = circleBorderWidth;
+            this.circleBorderColor = circleBorderColor;
             return this;
         }
 

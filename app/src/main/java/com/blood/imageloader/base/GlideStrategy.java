@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.blood.MainApplication;
+import com.blood.imageloader.glide.CircleBorderTransformation;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.RequestManager;
@@ -102,6 +103,16 @@ public class GlideStrategy implements IImageStrategy {
         if (option.fadeDuration > 0) {
             requestBuilder = requestBuilder.transition(DrawableTransitionOptions.withCrossFade(option.fadeDuration));
         }
+        if (option.scaleType == ImageView.ScaleType.FIT_CENTER) {
+            requestBuilder = requestBuilder.fitCenter();
+        } else if (option.scaleType == ImageView.ScaleType.CENTER_CROP) {
+            requestBuilder = requestBuilder.centerCrop();
+        } else if (option.scaleType == ImageView.ScaleType.CENTER_INSIDE) {
+            requestBuilder = requestBuilder.centerInside();
+        }
+        if (option.priority != null) {
+            requestBuilder = requestBuilder.priority(option.priority);
+        }
         // 图片转换器部分
         List<Transformation<Bitmap>> transformations = new ArrayList<>();
         RequestOptions requestOptions = new RequestOptions();
@@ -109,7 +120,12 @@ public class GlideStrategy implements IImageStrategy {
             transformations.add(new RoundedCorners(option.round));
         }
         if (option.circle) {
-            transformations.add(new CircleCrop());
+            if (option.circleBorderWidth > 0) {
+//                transformations.add(new GradientCircleBorderTransformation(option.circleBorderWidth, new int[]{0xff833ab4,0xfffd1d1d,0xfffcb045,0xfffd1d1d,0xff833ab4}));
+                transformations.add(new CircleBorderTransformation(option.circleBorderWidth, option.circleBorderColor));
+            } else {
+                transformations.add(new CircleCrop());
+            }
         }
         if (option.blur) {
             transformations.add(new BlurTransformation(option.blurRadius, option.blurSampling));
