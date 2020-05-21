@@ -42,6 +42,12 @@
             android:onClick="clearDisk"
             android:text="清理disk" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="checkDisk"
+            android:text="检查缓存" />
+
     </LinearLayout>
 
     <ImageView

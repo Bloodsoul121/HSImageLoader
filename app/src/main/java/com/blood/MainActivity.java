@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,9 +14,12 @@ import com.blood.imageloader.base.HSImageLoader;
 import com.blood.imageloader.base.HSImageOption;
 import com.blood.imageloader.base.IImageStrategy;
 import com.blood.util.DPUtil;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 //                .url("http://img.17sing.tw/uc/img/util_6639214_1589884217.png")
                 .url("http://img.17sing.tw/uc/img/util_9656998_1589530342.png")
                 .skipMemoryCache(true)
-                .resize(1080, 1920)
+                .resize(400, 400)
                 .build();
     }
 
@@ -138,11 +142,28 @@ public class MainActivity extends AppCompatActivity {
         HSImageLoader.getInstance().clearDiskCache();
     }
 
+    public void checkDisk(View view) {
+        new Thread(() -> {
+            String url = "http://img.17sing.tw/uc/img/util_9656998_1589530342.png";
+            try {
+                File file = Glide.with(MainActivity.this).downloadOnly().load(url).apply(new RequestOptions().onlyRetrieveFromCache(true)).submit().get();
+                if (file != null && file.exists()) {
+                    runOnUiThread(() -> Toast.makeText(MainActivity.this, "file exists", Toast.LENGTH_SHORT).show());
+                } else {
+                    runOnUiThread(() -> Toast.makeText(MainActivity.this, "file not exists", Toast.LENGTH_SHORT).show());
+                }
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(MainActivity.this, "error : file not exists", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
+    }
+
     private static class AdImageCallback implements IImageStrategy.Callback {
 
         private final WeakReference<ImageView> mImageViewWeakReference;
 
-        public AdImageCallback(ImageView imageView) {
+        AdImageCallback(ImageView imageView) {
             mImageViewWeakReference = new WeakReference<>(imageView);
         }
 
