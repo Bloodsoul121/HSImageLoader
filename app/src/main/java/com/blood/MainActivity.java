@@ -14,6 +14,9 @@ import com.blood.imageloader.base.HSImageOption;
 import com.blood.imageloader.base.IImageStrategy;
 import com.blood.util.DPUtil;
 
+import java.io.File;
+import java.lang.ref.WeakReference;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private HSImageOption mOption;
 
     private String mImageUrl = "http://img.17sing.tw/ktv_img/hsing_ktvroom_1487841535_100866.png";
+    private HSImageOption mDownloadOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
 //                .blur(25, 1)
 //                .fadeDuration(2000)
                 .scaleType(ImageView.ScaleType.CENTER_CROP)
+                .build();
+
+        mDownloadOption = new HSImageOption.Builder()
+//                .url("http://img.17sing.tw/uc/img/util_6639214_1589884217.png")
+                .url("http://img.17sing.tw/uc/img/util_9656998_1589530342.png")
+                .skipMemoryCache(true)
+                .resize(1080, 1920)
                 .build();
     }
 
@@ -100,7 +111,23 @@ public class MainActivity extends AppCompatActivity {
 
 //        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
 //        HSImageLoader.getInstance().display(this, mIvDeal, "", mOption);
-        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
+//        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
+
+        HSImageLoader.getInstance().load(this, mDownloadOption, new AdImageCallback(mIvDeal));
+    }
+
+    public void downloadImage(View view) {
+        HSImageLoader.getInstance().download(this, mDownloadOption, new IImageStrategy.DownloadCallback() {
+            @Override
+            public void onLoadCompleted(@NonNull File file) {
+                Log.i("HSImageLoader", file.getAbsolutePath());
+            }
+
+            @Override
+            public void onLoadFailed() {
+                Log.i("HSImageLoader", "onLoadFailed");
+            }
+        });
     }
 
     public void clearMemory(View view) {
@@ -109,5 +136,27 @@ public class MainActivity extends AppCompatActivity {
 
     public void clearDisk(View view) {
         HSImageLoader.getInstance().clearDiskCache();
+    }
+
+    private static class AdImageCallback implements IImageStrategy.Callback {
+
+        private final WeakReference<ImageView> mImageViewWeakReference;
+
+        public AdImageCallback(ImageView imageView) {
+            mImageViewWeakReference = new WeakReference<>(imageView);
+        }
+
+        @Override
+        public void onLoadCompleted(@NonNull Drawable drawable) {
+            if (mImageViewWeakReference.get() == null) {
+                return;
+            }
+            mImageViewWeakReference.get().setImageDrawable(drawable);
+        }
+
+        @Override
+        public void onLoadFailed() {
+
+        }
     }
 }

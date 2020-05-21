@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.widget.ImageView;
 
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 import com.blood.imageloader.HSImageDefaultOptions;
 
@@ -53,10 +54,7 @@ public class HSImageLoader implements IImageStrategy {
      * @param option  配置，可参考默认配置{@link HSImageDefaultOptions}
      */
     @Override
-    public void display(Context context, ImageView view, HSImageOption option) {
-        if (context == null) throw new IllegalStateException("Context is required");
-        if (view == null) throw new IllegalStateException("ImageView is required");
-        if (option == null) throw new IllegalStateException("HSImageOption is required");
+    public void display(@NonNull Context context, @NonNull ImageView view, @NonNull HSImageOption option) {
         mImageLoader.display(context, view, option);
     }
 
@@ -68,11 +66,13 @@ public class HSImageLoader implements IImageStrategy {
      * @param callback 回调
      */
     @Override
-    public void load(Context context, HSImageOption option, Callback callback) {
-        if (context == null) throw new IllegalStateException("Context is required");
-        if (option == null) throw new IllegalStateException("HSImageOption is required");
-        if (callback == null) throw new IllegalStateException("Callback is required");
+    public void load(@NonNull Context context, @NonNull HSImageOption option, Callback callback) {
         mImageLoader.load(context, option, callback);
+    }
+
+    @Override
+    public void download(@NonNull Context context, @NonNull HSImageOption option, DownloadCallback callback) {
+        mImageLoader.download(context, option, callback);
     }
 
     @Override

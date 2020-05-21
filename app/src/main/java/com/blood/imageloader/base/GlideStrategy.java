@@ -22,8 +22,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 public class GlideStrategy implements IImageStrategy {
 
     @Override
-    public void display(Context context, ImageView view, HSImageOption option) {
+    public void display(@NonNull Context context, @NonNull ImageView view, @NonNull HSImageOption option) {
         RequestBuilder<Drawable> requestBuilder = setup(context, option);
         if (requestBuilder == null) {
             view.setImageDrawable(null);
@@ -42,7 +44,7 @@ public class GlideStrategy implements IImageStrategy {
     }
 
     @Override
-    public void load(Context context, HSImageOption option, Callback callback) {
+    public void load(@NonNull Context context, @NonNull HSImageOption option, Callback callback) {
         RequestBuilder<Drawable> requestBuilder = setup(context, option);
         if (requestBuilder == null) {
             if (callback != null) {
@@ -53,6 +55,31 @@ public class GlideStrategy implements IImageStrategy {
         requestBuilder.into(new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                if (callback != null) {
+                    callback.onLoadCompleted(resource);
+                }
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+                if (callback != null) {
+                    callback.onLoadFailed();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void download(@NonNull Context context, @NonNull HSImageOption option, DownloadCallback callback) {
+        int targetWidth = Target.SIZE_ORIGINAL;
+        int targetHeight = Target.SIZE_ORIGINAL;
+        if (option.targetWidth > 0 && option.targetHeight > 0) {
+            targetWidth = option.targetWidth;
+            targetHeight = option.targetHeight;
+        }
+        Glide.with(context).downloadOnly().load(option.url).override(targetWidth, targetHeight).into(new CustomTarget<File>() {
+            @Override
+            public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
                 if (callback != null) {
                     callback.onLoadCompleted(resource);
                 }
@@ -144,6 +171,6 @@ public class GlideStrategy implements IImageStrategy {
 
     @Override
     public void clearDiskCache() {
-//        ThreadPool.getInstance().executeShortTask(() -> Glide.get(MainApplication.getApplication()).clearDiskCache());
+        new Thread(Glide.get(MainApplication.getApplication())::clearDiskCache).start();
     }
 }
