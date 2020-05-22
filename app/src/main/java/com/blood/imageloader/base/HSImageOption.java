@@ -17,6 +17,8 @@ import java.io.File;
  */
 public class HSImageOption {
 
+    // 加载图片bitmap
+    Bitmap bitmap;
     // 加载图片uri
     Uri uri;
     // 加载图片本地文件
@@ -63,6 +65,7 @@ public class HSImageOption {
     int circleBorderColor;
 
     private HSImageOption(Builder builder) {
+        this.bitmap = builder.bitmap;
         this.uri = builder.uri;
         this.file = builder.file;
         this.url = builder.url;
@@ -89,6 +92,8 @@ public class HSImageOption {
 
     public static final class Builder {
 
+        // 加载图片bitmap
+        Bitmap bitmap;
         // 加载图片uri
         private Uri uri;
         // 加载图片本地文件
@@ -136,6 +141,11 @@ public class HSImageOption {
 
         public Builder() {
             scaleType = ScaleType.FIT_CENTER;
+        }
+
+        public Builder bitmap(Bitmap bitmap) {
+            this.bitmap = bitmap;
+            return this;
         }
 
         public Builder uri(Uri uri) {

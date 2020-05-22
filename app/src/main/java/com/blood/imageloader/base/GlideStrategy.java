@@ -105,6 +105,8 @@ public class GlideStrategy implements IImageStrategy {
             requestBuilder = requestManager.load(option.drawableResId);
         } else if (!TextUtils.isEmpty(option.url)) {
             requestBuilder = requestManager.load(option.url);
+        } else if (option.bitmap != null) {
+            requestBuilder = requestManager.load(option.bitmap);
         } else {
             requestBuilder = requestManager.load("");
         }

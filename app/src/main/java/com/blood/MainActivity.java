@@ -1,5 +1,7 @@
 package com.blood;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,7 +119,10 @@ public class MainActivity extends AppCompatActivity {
 //        HSImageLoader.getInstance().display(this, mIvDeal, "", mOption);
 //        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
 
-        HSImageLoader.getInstance().load(this, mDownloadOption, new AdImageCallback(mIvDeal));
+//        HSImageLoader.getInstance().load(this, mDownloadOption, new AdImageCallback(mIvDeal));
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image15);
+        HSImageLoader.getInstance().display(this, mIvDeal, bitmap);
     }
 
     public void downloadImage(View view) {

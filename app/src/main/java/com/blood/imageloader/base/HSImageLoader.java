@@ -1,6 +1,7 @@
 package com.blood.imageloader.base;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.widget.ImageView;
 
@@ -121,6 +122,10 @@ public class HSImageLoader implements IImageStrategy {
         display(context, view, url, null);
     }
 
+    public void display(Context context, ImageView view, Bitmap bitmap) {
+        display(context, view, bitmap, null);
+    }
+
     public void display(Context context, ImageView view, @DrawableRes int resourceId) {
         display(context, view, resourceId, null);
     }
@@ -162,6 +167,16 @@ public class HSImageLoader implements IImageStrategy {
             option = new HSImageOption.Builder().drawableResId(resourceId).build();
         }
         option.drawableResId = resourceId;
+        display(context, view, option);
+    }
+
+    public void display(Context context, ImageView view, Bitmap bitmap, HSImageOption option) {
+        if (context == null) throw new IllegalStateException("Context is required");
+        if (view == null) throw new IllegalStateException("ImageView is required");
+        if (option == null) {
+            option = new HSImageOption.Builder().bitmap(bitmap).build();
+        }
+        option.bitmap = bitmap;
         display(context, view, option);
     }
 
