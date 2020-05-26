@@ -121,8 +121,9 @@ public class MainActivity extends AppCompatActivity {
 
 //        HSImageLoader.getInstance().load(this, mDownloadOption, new AdImageCallback(mIvDeal));
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image15);
-        HSImageLoader.getInstance().display(this, mIvDeal, bitmap);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image1);
+        HSImageOption option = new HSImageOption.Builder().blur(5, 8).scaleType(ImageView.ScaleType.CENTER_CROP).build();
+        HSImageLoader.getInstance().display(this, mIvDeal, bitmap, option);
     }
 
     public void downloadImage(View view) {
