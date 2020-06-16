@@ -19,22 +19,33 @@ public interface IImageStrategy {
 
     void download(@NonNull Context context, @NonNull HSImageOption option, DownloadCallback callback);
 
+    void checkExistCache(@NonNull Context context, String url, CheckExistCacheCallback callback);
+
     void clearMemoryCache();
 
     void clearDiskCache();
 
     interface Callback {
 
-        void onLoadCompleted(@NonNull Drawable drawable);
+        void onLoadStart(String url);
 
-        void onLoadFailed();
+        void onLoadCompleted(String url, @NonNull Drawable drawable);
+
+        void onLoadFailed(String url);
     }
 
     interface DownloadCallback {
 
+        void onLoadStart();
+
         void onLoadCompleted(@NonNull File file);
 
         void onLoadFailed();
+    }
+
+    interface CheckExistCacheCallback {
+
+        void onCheckExistCache(boolean isExist);
     }
 
 }

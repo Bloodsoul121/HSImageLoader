@@ -1,7 +1,5 @@
 package com.blood;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initImage() {
 //        HSImageLoader.getInstance().display(this, mIvOri, R.drawable.image1);
-        HSImageLoader.getInstance().display(this, mIvOri, mImageUrl);
+//        HSImageLoader.getInstance().display(this, mIvOri, mImageUrl);
 //        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
 //        HSImageLoader.getInstance().display(this, mIvOri, mImageUrl, mOption);
     }
@@ -117,17 +115,22 @@ public class MainActivity extends AppCompatActivity {
 
 //        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
 //        HSImageLoader.getInstance().display(this, mIvDeal, "", mOption);
-//        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
+        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
 
 //        HSImageLoader.getInstance().load(this, mDownloadOption, new AdImageCallback(mIvDeal));
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image1);
-        HSImageOption option = new HSImageOption.Builder().blur(5, 8).scaleType(ImageView.ScaleType.CENTER_CROP).build();
-        HSImageLoader.getInstance().display(this, mIvDeal, bitmap, option);
+//        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.image1);
+//        HSImageOption option = new HSImageOption.Builder().blur(5, 8).scaleType(ImageView.ScaleType.CENTER_CROP).build();
+//        HSImageLoader.getInstance().display(this, mIvDeal, bitmap, option);
     }
 
     public void downloadImage(View view) {
         HSImageLoader.getInstance().download(this, mDownloadOption, new IImageStrategy.DownloadCallback() {
+            @Override
+            public void onLoadStart() {
+
+            }
+
             @Override
             public void onLoadCompleted(@NonNull File file) {
                 Log.i("HSImageLoader", file.getAbsolutePath());
@@ -165,6 +168,16 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
+    public void checkCache(View view) {
+        HSImageLoader.getInstance().checkExistCache(this, mImageUrl, new IImageStrategy.CheckExistCacheCallback() {
+            @Override
+            public void onCheckExistCache(boolean isExist) {
+                Log.i("bloodsoul", "onCheckExistCache : " + isExist);
+                Toast.makeText(MainActivity.this, "file exists " + isExist, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private static class AdImageCallback implements IImageStrategy.Callback {
 
         private final WeakReference<ImageView> mImageViewWeakReference;
@@ -174,7 +187,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onLoadCompleted(@NonNull Drawable drawable) {
+        public void onLoadStart(String url) {
+
+        }
+
+        @Override
+        public void onLoadCompleted(String url, @NonNull Drawable drawable) {
             if (mImageViewWeakReference.get() == null) {
                 return;
             }
@@ -182,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onLoadFailed() {
+        public void onLoadFailed(String url) {
 
         }
     }

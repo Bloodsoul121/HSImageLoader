@@ -23,6 +23,12 @@
             android:onClick="downloadImage"
             android:text="下載圖片" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="checkCache"
+            android:text="檢查圖片緩存" />
+
     </LinearLayout>
 
     <LinearLayout

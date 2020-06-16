@@ -48,22 +48,37 @@ public class GlideStrategy implements IImageStrategy {
         RequestBuilder<Drawable> requestBuilder = setup(context, option);
         if (requestBuilder == null) {
             if (callback != null) {
-                callback.onLoadFailed();
+                callback.onLoadFailed(option.url);
             }
             return;
         }
         requestBuilder.into(new CustomTarget<Drawable>() {
+
+            @Override
+            public void onLoadStarted(@Nullable Drawable placeholder) {
+                if (callback != null) {
+                    callback.onLoadStart(option.url);
+                }
+            }
+
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 if (callback != null) {
-                    callback.onLoadCompleted(resource);
+                    callback.onLoadCompleted(option.url, resource);
                 }
             }
 
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {
                 if (callback != null) {
-                    callback.onLoadFailed();
+                    callback.onLoadFailed(option.url);
+                }
+            }
+
+            @Override
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                if (callback != null) {
+                    callback.onLoadFailed(option.url);
                 }
             }
         });
@@ -78,6 +93,14 @@ public class GlideStrategy implements IImageStrategy {
             targetHeight = option.targetHeight;
         }
         Glide.with(context).downloadOnly().load(option.url).override(targetWidth, targetHeight).into(new CustomTarget<File>() {
+
+            @Override
+            public void onLoadStarted(@Nullable Drawable placeholder) {
+                if (callback != null) {
+                    callback.onLoadStart();
+                }
+            }
+
             @Override
             public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
                 if (callback != null) {
@@ -89,6 +112,45 @@ public class GlideStrategy implements IImageStrategy {
             public void onLoadCleared(@Nullable Drawable placeholder) {
                 if (callback != null) {
                     callback.onLoadFailed();
+                }
+            }
+
+            @Override
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                if (callback != null) {
+                    callback.onLoadFailed();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void checkExistCache(@NonNull Context context, String url, CheckExistCacheCallback callback) {
+        if (TextUtils.isEmpty(url)) {
+            if (callback != null) {
+                callback.onCheckExistCache(false);
+            }
+            return;
+        }
+        Glide.with(context).load(url).onlyRetrieveFromCache(true).into(new CustomTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                if (callback != null) {
+                    callback.onCheckExistCache(true);
+                }
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+                if (callback != null) {
+                    callback.onCheckExistCache(false);
+                }
+            }
+
+            @Override
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                if (callback != null) {
+                    callback.onCheckExistCache(false);
                 }
             }
         });

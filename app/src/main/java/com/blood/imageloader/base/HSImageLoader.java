@@ -77,6 +77,11 @@ public class HSImageLoader implements IImageStrategy {
     }
 
     @Override
+    public void checkExistCache(@NonNull Context context, String url, CheckExistCacheCallback callback) {
+        mImageLoader.checkExistCache(context, url, callback);
+    }
+
+    @Override
     public void clearMemoryCache() {
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
