@@ -1,7 +1,7 @@
 package com.blood.imageloader.base;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +29,7 @@ public interface IImageStrategy {
 
         void onLoadStart(String url);
 
-        void onLoadCompleted(String url, @NonNull Drawable drawable);
+        void onLoadCompleted(String url, @NonNull Bitmap bitmap);
 
         void onLoadFailed(String url);
     }

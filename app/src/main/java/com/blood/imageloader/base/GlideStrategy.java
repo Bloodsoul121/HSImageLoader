@@ -13,13 +13,12 @@ import com.blood.MainApplication;
 import com.blood.imageloader.glide.CircleBorderTransformation;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
@@ -35,7 +34,7 @@ public class GlideStrategy implements IImageStrategy {
 
     @Override
     public void display(@NonNull Context context, @NonNull ImageView view, @NonNull HSImageOption option) {
-        RequestBuilder<Drawable> requestBuilder = setup(context, option);
+        RequestBuilder<Bitmap> requestBuilder = setup(context, option);
         if (requestBuilder == null) {
             view.setImageDrawable(null);
             return;
@@ -45,15 +44,14 @@ public class GlideStrategy implements IImageStrategy {
 
     @Override
     public void load(@NonNull Context context, @NonNull HSImageOption option, Callback callback) {
-        RequestBuilder<Drawable> requestBuilder = setup(context, option);
+        RequestBuilder<Bitmap> requestBuilder = setup(context, option);
         if (requestBuilder == null) {
             if (callback != null) {
                 callback.onLoadFailed(option.url);
             }
             return;
         }
-        requestBuilder.into(new CustomTarget<Drawable>() {
-
+        requestBuilder.into(new CustomTarget<Bitmap>() {
             @Override
             public void onLoadStarted(@Nullable Drawable placeholder) {
                 if (callback != null) {
@@ -62,7 +60,7 @@ public class GlideStrategy implements IImageStrategy {
             }
 
             @Override
-            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 if (callback != null) {
                     callback.onLoadCompleted(option.url, resource);
                 }
@@ -156,21 +154,20 @@ public class GlideStrategy implements IImageStrategy {
         });
     }
 
-    private RequestBuilder<Drawable> setup(Context context, HSImageOption option) {
-        RequestManager requestManager = Glide.with(context);
-        RequestBuilder<Drawable> requestBuilder;
+    private RequestBuilder<Bitmap> setup(Context context, HSImageOption option) {
+        RequestBuilder<Bitmap> requestBuilder = Glide.with(context).asBitmap();
         if (option.uri != null) {
-            requestBuilder = requestManager.load(option.uri);
+            requestBuilder = requestBuilder.load(option.uri);
         } else if (option.file != null) {
-            requestBuilder = requestManager.load(option.file);
+            requestBuilder = requestBuilder.load(option.file);
         } else if (option.drawableResId > 0) {
-            requestBuilder = requestManager.load(option.drawableResId);
+            requestBuilder = requestBuilder.load(option.drawableResId);
         } else if (!TextUtils.isEmpty(option.url)) {
-            requestBuilder = requestManager.load(option.url);
+            requestBuilder = requestBuilder.load(option.url);
         } else if (option.bitmap != null) {
-            requestBuilder = requestManager.load(option.bitmap);
+            requestBuilder = requestBuilder.load(option.bitmap);
         } else {
-            requestBuilder = requestManager.load("");
+            requestBuilder = requestBuilder.load("");
         }
         // 缓存
         requestBuilder = requestBuilder.skipMemoryCache(option.skipMemoryCache);
@@ -192,7 +189,7 @@ public class GlideStrategy implements IImageStrategy {
             requestBuilder = requestBuilder.override(option.targetWidth, option.targetHeight);
         }
         if (option.fadeDuration > 0) {
-            requestBuilder = requestBuilder.transition(DrawableTransitionOptions.withCrossFade(option.fadeDuration));
+            requestBuilder = requestBuilder.transition(BitmapTransitionOptions.withCrossFade(option.fadeDuration));
         }
         if (option.scaleType == ImageView.ScaleType.FIT_CENTER) {
             requestBuilder = requestBuilder.fitCenter();
