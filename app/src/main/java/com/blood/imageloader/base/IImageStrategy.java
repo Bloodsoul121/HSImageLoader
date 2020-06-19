@@ -17,6 +17,8 @@ public interface IImageStrategy {
 
     void load(@NonNull Context context, @NonNull HSImageOption option, Callback callback);
 
+    Bitmap loadSync(@NonNull Context context, @NonNull HSImageOption option);
+
     void download(@NonNull Context context, @NonNull HSImageOption option, DownloadCallback callback);
 
     void checkExistCache(@NonNull Context context, String url, CheckExistCacheCallback callback);

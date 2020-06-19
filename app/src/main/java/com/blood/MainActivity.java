@@ -143,6 +143,14 @@ public class MainActivity extends AppCompatActivity {
 
 //        Bitmap bitmap = ImageLoader.getInstance().loadImageSync(mImageUrl);
 //        Log.i("bloodsoul", "loadImageSync -> success " + (bitmap != null));
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap bitmap = HSImageLoader.getInstance().loadSync(MainActivity.this, mImageUrl);
+                Log.i("bloodsoul", "loadSync -> success " + (bitmap != null));
+            }
+        }).start();
     }
 
     public void downloadImageSync(View view) {

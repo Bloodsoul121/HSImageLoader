@@ -27,6 +27,7 @@ import com.bumptech.glide.request.transition.Transition;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
@@ -78,6 +79,20 @@ public class GlideStrategy implements IImageStrategy {
                 }
             }
         });
+    }
+
+    @Override
+    public Bitmap loadSync(@NonNull Context context, @NonNull HSImageOption option) {
+        RequestBuilder<Bitmap> requestBuilder = setup(context, option);
+        if (requestBuilder == null) {
+            return null;
+        }
+        try {
+            return requestBuilder.submit().get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

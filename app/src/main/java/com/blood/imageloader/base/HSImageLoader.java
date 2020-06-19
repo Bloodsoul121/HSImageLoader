@@ -72,6 +72,11 @@ public class HSImageLoader implements IImageStrategy {
     }
 
     @Override
+    public Bitmap loadSync(@NonNull Context context, @NonNull HSImageOption option) {
+        return mImageLoader.loadSync(context, option);
+    }
+
+    @Override
     public void download(@NonNull Context context, @NonNull HSImageOption option, DownloadCallback callback) {
         mImageLoader.download(context, option, callback);
     }
@@ -113,6 +118,26 @@ public class HSImageLoader implements IImageStrategy {
     public void load(Context context, @DrawableRes int resourceId, Callback callback) {
         HSImageOption option = new HSImageOption.Builder().drawableResId(resourceId).build();
         load(context, option, callback);
+    }
+
+    public Bitmap loadSync(Context context, Uri uri) {
+        HSImageOption option = new HSImageOption.Builder().uri(uri).build();
+        return loadSync(context, option);
+    }
+
+    public Bitmap loadSync(Context context, File file) {
+        HSImageOption option = new HSImageOption.Builder().file(file).build();
+        return loadSync(context, option);
+    }
+
+    public Bitmap loadSync(Context context, String url) {
+        HSImageOption option = new HSImageOption.Builder().url(url).build();
+        return loadSync(context, option);
+    }
+
+    public Bitmap loadSync(Context context, @DrawableRes int resourceId) {
+        HSImageOption option = new HSImageOption.Builder().drawableResId(resourceId).build();
+        return loadSync(context, option);
     }
 
     public void display(Context context, ImageView view, Uri uri) {
