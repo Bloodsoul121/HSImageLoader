@@ -16,15 +16,14 @@ public class MainApplication extends Application {
     private static MainApplication myApplication = null;
 
     public static MainApplication getApplication() {
-        if (myApplication == null) {
-            myApplication = new MainApplication();
-        }
         return myApplication;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        myApplication = this;
+
         HSImageLoader.getInstance().init();
 
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()

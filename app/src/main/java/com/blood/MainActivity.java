@@ -1,6 +1,7 @@
 package com.blood;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,9 +16,7 @@ import com.blood.imageloader.base.HSImageOption;
 import com.blood.imageloader.base.IImageStrategy;
 import com.blood.util.DPUtil;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -26,7 +25,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
 //        HSImageLoader.getInstance().display(this, mIvDeal, "", mOption);
-        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
+//        HSImageLoader.getInstance().display(this, mIvDeal, mImageUrl, mOption);
 
 //        HSImageLoader.getInstance().load(this, mDownloadOption, new AdImageCallback(mIvDeal));
 
@@ -144,13 +142,33 @@ public class MainActivity extends AppCompatActivity {
 //        Bitmap bitmap = ImageLoader.getInstance().loadImageSync(mImageUrl);
 //        Log.i("bloodsoul", "loadImageSync -> success " + (bitmap != null));
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Bitmap bitmap = HSImageLoader.getInstance().loadSync(MainActivity.this, mImageUrl);
-                Log.i("bloodsoul", "loadSync -> success " + (bitmap != null));
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+////                Bitmap bitmap = ImageLoader.getInstance().loadImageSync(mImageUrl);
+//                Bitmap bitmap = HSImageLoader.getInstance().loadSync(MainActivity.this, mImageUrl);
+//                Log.i("bloodsoul", "loadSync -> success " + (bitmap != null));
+//            }
+//        }).start();
+
+//        Bitmap bitmap = ImageLoader.getInstance().loadImageSync("drawable://" + R.drawable.image15);
+//        Bitmap bitmap = HSImageLoader.getInstance().loadSync(R.drawable.image15);
+//        Log.i("bloodsoul", "loadSync -> success " + (bitmap != null));
+
+//        try {
+//            Glide.with(this)
+//                    .asBitmap()
+//                    .load(R.drawable.image15)
+//                    .submit()
+//                    .get();
+//        } catch (ExecutionException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+//        Glide.with(this)
+//                .asBitmap()
+//                .load(R.drawable.image15)
+//                .into(mIvDeal);
     }
 
     public void downloadImageSync(View view) {
