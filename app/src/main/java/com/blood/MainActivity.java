@@ -15,11 +15,18 @@ import com.blood.imageloader.base.HSImageOption;
 import com.blood.imageloader.base.IImageStrategy;
 import com.blood.util.DPUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -133,6 +140,47 @@ public class MainActivity extends AppCompatActivity {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
+
+//        Bitmap bitmap = ImageLoader.getInstance().loadImageSync(mImageUrl);
+//        Log.i("bloodsoul", "loadImageSync -> success " + (bitmap != null));
+    }
+
+    public void downloadImageSync(View view) {
+        Bitmap bitmap = loadSync();
+        Log.i("bloodsoul", "downloadImageSync -> success " + (bitmap != null));
+    }
+
+    private Bitmap loadSync() {
+//        FutureTask<Bitmap> future = new FutureTask<Bitmap>(new Callable<Bitmap>() {
+//            @Override
+//            public Bitmap call() throws Exception {
+//                return Glide.with(MainActivity.this)
+//                        .asBitmap()
+//                        .load(mImageUrl)
+//                        .submit().get();
+//            }
+//        });
+//        new Thread(future).start();
+
+        ExecutorService threadPool = Executors.newCachedThreadPool();
+        Future<Bitmap> future = threadPool.submit(new Callable<Bitmap>() {
+            @Override
+            public Bitmap call() throws Exception {
+                return Glide.with(MainActivity.this)
+                        .asBitmap()
+                        .load(mImageUrl)
+                        .submit().get();
+            }
+        });
+
+        try {
+            return future.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void downloadImage(View view) {

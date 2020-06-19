@@ -68,9 +68,7 @@ public class GlideStrategy implements IImageStrategy {
 
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {
-                if (callback != null) {
-                    callback.onLoadFailed(option.url);
-                }
+
             }
 
             @Override
@@ -108,9 +106,7 @@ public class GlideStrategy implements IImageStrategy {
 
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {
-                if (callback != null) {
-                    callback.onLoadFailed();
-                }
+
             }
 
             @Override
@@ -140,9 +136,7 @@ public class GlideStrategy implements IImageStrategy {
 
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {
-                if (callback != null) {
-                    callback.onCheckExistCache(false);
-                }
+
             }
 
             @Override

@@ -26,8 +26,8 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="checkCache"
-            android:text="檢查圖片緩存" />
+            android:onClick="downloadImageSync"
+            android:text="同步下載圖片" />
 
     </LinearLayout>
 
@@ -53,6 +53,12 @@
             android:layout_height="wrap_content"
             android:onClick="checkDisk"
             android:text="检查缓存" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="checkCache"
+            android:text="檢查圖片緩存" />
 
     </LinearLayout>
 
